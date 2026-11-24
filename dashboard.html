@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a0f1e">
+<title>Workspace — Nexora AI</title>
+<link rel="icon" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="app-page">
+
+<section id="adminLogin" class="nx-login" aria-labelledby="loginTitle">
+<form id="adminLoginForm" class="nx-login-card">
+<a class="nx-login-brand" href="index.html">NEXORA <span>AI</span></a>
+<p class="nx-eyebrow">SECURE WORKSPACE</p>
+<h1 id="loginTitle">Admin sign in</h1>
+<p class="nx-muted">Sign in to access private leads and analytics.</p>
+<label for="adminEmail">Admin email</label>
+<input id="adminEmail" name="email" type="email" autocomplete="username" required maxlength="254" placeholder="you@company.com">
+<label for="adminPassword">Password</label>
+<input id="adminPassword" name="password" type="password" autocomplete="current-password" required maxlength="200" placeholder="Your admin password">
+<button id="adminLoginButton" type="submit">Sign in securely</button>
+<p id="adminLoginError" role="alert" aria-live="polite"></p>
+<a class="nx-back" href="index.html">← Back to website</a>
+</form>
+</section>
+
+<style>
+.nx-login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at 50% 0%,#292111 0%,#0a0a0a 58%);color:#f7f2e7;font-family:'DM Sans',sans-serif}
+.nx-login[hidden],#dashboardApp[hidden]{display:none!important}
+.nx-login-card{width:min(100%,430px);padding:38px;border:1px solid #574622;border-radius:22px;background:rgba(15,15,14,.96);box-shadow:0 25px 90px #0009}
+.nx-login-brand{font-weight:800;letter-spacing:3px;color:#f8f2e6;text-decoration:none}
+.nx-login-brand span{color:#d6b46a}
+.nx-eyebrow{margin:34px 0 8px;color:#d6b46a;font-size:11px;letter-spacing:2px}
+.nx-login-card h1{margin:0;font:800 30px Manrope,sans-serif}
+.nx-muted{color:#aaa59a;font-size:14px;margin:10px 0 26px}
+.nx-login-card label{display:block;margin:16px 0 7px;font-size:13px;color:#ded6c5}
+.nx-login-card input{box-sizing:border-box;width:100%;padding:13px 14px;border:1px solid #39352b;border-radius:10px;background:#111;color:#fff;font:inherit;outline:none}
+.nx-login-card input:focus{border-color:#d6b46a}
+.nx-login-card button{width:100%;margin-top:22px;padding:13px;border:0;border-radius:10px;background:linear-gradient(100deg,#b48a2d,#f0d99b);color:#17130a;font-weight:800;cursor:pointer}
+.nx-login-card button:disabled{opacity:.6;cursor:wait}
+#adminLoginError{min-height:18px;color:#ff9a9a;font-size:13px}
+.nx-back{color:#d6b46a;text-decoration:none;font-size:13px}
+.nx-logout{margin-left:10px;border:1px solid #5a4926;border-radius:8px;padding:8px 11px;background:#17140d;color:#e5ca85;cursor:pointer}
+</style>
+
+<div id="dashboardApp" hidden>
+<aside class="sidebar" id="sidebar">
+<a class="brand" href="index.html"><span class="logo">N<span>.</span></span>NEXORA <em>AI</em></a>
+<div class="workspace"><span>AG</span><div><b>Atlas Growth</b><small>Demo workspace</small></div><i>⌄</i></div>
+<small class="side-label">WORKSPACE</small>
+<nav class="appnav">
+<button class="active" data-view="overview">▦ <span>Overview</span></button>
+<button data-view="leads">◎ <span>Leads</span><i id="leadCount">0</i></button>
+<button data-view="inbox">◌ <span>AI inbox</span></button>
+<button data-view="workflows">⌘ <span>Workflows</span></button>
+<button data-view="email">✉ <span>Email automation</span></button>
+<button data-view="appointments">▦ <span>Appointments</span></button>
+<button data-view="analytics">↗ <span>Analytics</span></button>
+<small class="side-label">MANAGE</small>
+<button data-view="clients">▣ <span>Clients</span></button>
+<button data-view="voice">◖ <span>Voice agent</span><em>BETA</em></button>
+<button data-view="settings">⚙ <span>Settings</span></button>
+</nav>
+<div class="side-bottom">
+<div class="side-promo"><b>✦ &nbsp;Exploring Nexora?</b><p>This workspace uses sample data. Connect real services when you're ready.</p><a href="index.html#platform">Explore platform ↗</a></div>
+<div class="side-user"><span>AC</span><div><b>Alex Carter</b><small>Demo administrator</small></div><i>•••</i></div>
+</div>
+</aside>
+
+<div class="backdrop" id="backdrop"></div>
+<main class="main">
+<header class="topbar">
+<button class="side-toggle" id="sideToggle">☰</button>
+<div class="crumb"><span>Workspace</span> / <b id="crumbCurrent">Overview</b></div>
+<div class="top-actions">
+<span class="demo-pill" id="connectionPill">● CONNECTING</span>
+<button id="notifications" aria-label="Notifications">♧</button>
+<span class="userpic" id="adminAvatar">AD</span>
+<button type="button" class="nx-logout" id="adminLogout">Log out</button>
+</div>
+</header>
+
+<div class="content">
+<div class="notice" id="notice"><span>✦</span><div><b>Lead data is connected to your local database</b><small>Lead records, follow-up dates and charts are live. Email, appointments, voice and client workspaces remain demo-only.</small></div><button id="dismissNotice">×</button></div>
+
+<section class="view active" id="view-overview">
+<div class="pagehead">
+<div><small class="eyebrow"><i></i> MONDAY, NOVEMBER 23, 2026</small><h1>Good morning, Alex <span>✦</span></h1><p>Here's what's happening across your agency today.</p></div>
+<button class="btn btn-primary" id="addLeadTop">＋ Add a lead</button>
+</div>
+
+<div class="kpis">
+<article><div>Total leads <span class="kico purple">◎</span></div><strong id="totalKpi">0</strong><small id="totalKpiNote">Saved leads in database</small><div class="tinybars"><i style="height:25%"></i><i style="height:45%"></i><i style="height:35%"></i><i style="height:65%"></i><i style="height:52%"></i><i style="height:100%"></i></div></article>
+<article><div>Qualified leads <span class="kico mint">✓</span></div><strong id="qualifiedKpi">0</strong><small id="qualifiedKpiNote">Qualified saved leads</small><div class="tinybars mintbars"><i style="height:35%"></i><i style="height:30%"></i><i style="height:55%"></i><i style="height:45%"></i><i style="height:75%"></i><i style="height:100%"></i></div></article>
+<article><div>Follow-ups due <span class="kico orange">◷</span></div><strong id="followUpsDueKpi">0</strong><small id="followUpsDueNote" class="orange-text">Due today or overdue</small><div class="tinybars orangebars"><i style="height:85%"></i><i style="height:66%"></i><i style="height:75%"></i><i style="height:58%"></i><i style="height:44%"></i><i style="height:30%"></i></div></article>
+<article><div>Active workflows <span class="kico blue">⌘</span></div><strong>6</strong><small><b>4 enabled</b> · 2 in draft</small><div class="tinybars bluebars"><i style="height:25%"></i><i style="height:48%"></i><i style="height:41%"></i><i style="height:60%"></i><i style="height:82%"></i><i style="height:100%"></i></div></article>
+</div>
+
+<div class="dashgrid">
+<section class="panel">
+<div class="panelhead"><div><h2>Lead activity</h2><p>Saved lead records by date</p></div><select id="range"><option value="7">Last 7 days</option><option value="30">Last 30 days</option></select></div>
+<div class="chartmeta"><div><strong id="chartTotal">0</strong><small>saved leads in selected period</small></div><span>● Leads &nbsp; <i>●</i> Qualified</span></div>
+<div class="bar-chart" id="barChart"></div>
+<div class="axis" id="chartAxis"><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span></div>
+</section>
+<section class="panel">
+<div class="panelhead"><div><h2>Lead sources</h2><p>Where enquiries begin</p></div><button class="quiet">•••</button></div>
+<div class="source-wrap"><div class="donut" id="sourceDonut"><div><b id="sourceTotal">0</b><small>Total leads</small></div></div><div class="legend" id="sourceLegend"><p>No saved lead sources yet.</p></div></div>
+</section>
+</div>
+
+<div class="dashgrid bottomgrid">
+<section class="panel">
+<div class="panelhead"><div><h2>Recent leads</h2><p>Keep every conversation moving</p></div><button class="linkbtn" data-goto="leads">View all leads ↗</button></div>
+<div class="tablewrap"><table><thead><tr><th>CONTACT</th><th>SOURCE</th><th>STATUS</th><th>FOLLOW-UP</th><th>ADDED</th><th></th></tr></thead><tbody id="recentBody"></tbody></table></div>
+</section>
+<section class="panel">
+<div class="panelhead"><div><h2>Workflow activity</h2><p>Automation at a glance</p></div><button class="quiet" data-goto="workflows">↗</button></div>
+<div class="workflowitem"><span class="kico mint">✉</span><div><b>New lead welcome</b><small>Confirmation email draft</small></div><label>Active</label></div>
+<div class="workflowitem"><span class="kico purple">◎</span><div><b>Lead qualification</b><small>Rule-based sorting</small></div><label>Active</label></div>
+<div class="workflowitem"><span class="kico orange">◷</span><div><b>Missed follow-up alert</b><small>Task reminder</small></div><label class="draft">Draft</label></div>
+<button class="btn btn-outline full" data-goto="workflows">Open workflow builder ↗</button>
+</section>
+</div>
+</section>
+
+<section class="view" id="view-leads">
+<div class="pagehead"><div><small class="eyebrow">LEAD MANAGEMENT</small><h1>Leads, in focus.</h1><p>Organize enquiries and keep the next step clear.</p></div><button class="btn btn-primary" id="addLead">＋ Add a lead</button></div>
+<section class="panel">
+<div class="toolbar"><input id="search" placeholder="Search name, email or company…" aria-label="Search leads"><select id="filter"><option value="all">All statuses</option><option>New</option><option>Qualified</option><option>Follow-up</option><option>Converted</option></select><button class="btn btn-outline" id="export">↓ Export CSV</button></div>
+<div class="tablewrap"><table class="fulltable"><thead><tr><th>CONTACT</th><th>COMPANY</th><th>SOURCE</th><th>STATUS</th><th>FOLLOW-UP</th><th>ADDED</th><th>ACTIONS</th></tr></thead><tbody id="allBody"></tbody></table></div>
+<div class="tablefoot"><span id="resultCount">0 leads</span><span>Lead records stored in the connected database.</span></div>
+</section>
+</section>
+
+<section class="view" id="view-inbox">
+<div class="pagehead"><div><small class="eyebrow">CUSTOMER CONVERSATIONS</small><h1>AI inbox</h1><p>Explore a sample support conversation.</p></div><span class="soft">Demo assistant</span></div>
+<div class="inbox">
+<section class="panel"><div class="panelhead"><div><h2>Conversations</h2><p>Sample customer messages</p></div></div><div class="convo selected"><span class="avatar purple">JM</span><div><b>Jordan Miller</b><small>Interested in strategy services</small></div></div><div class="convo"><span class="avatar blue">SK</span><div><b>Sam Kim</b><small>Asked about pricing</small></div></div><div class="convo"><span class="avatar peach">RT</span><div><b>Riley Taylor</b><small>Appointment question</small></div></div></section>
+<section class="panel conversation"><div class="conversationhead"><span class="avatar purple">JM</span><div><b>Jordan Miller</b><small>Website chat · Sample conversation</small></div><span class="soft">Demo</span></div><div class="thread" id="thread"><small>TODAY · SAMPLE DATA</small><p class="customer">Hi, can you tell me what your agency helps with?</p><p class="assistant">We help teams with brand strategy, website experiences, and digital growth campaigns. What are you hoping to improve?</p><p class="customer">I'd like more qualified enquiries from our website.</p><p class="assistant">A useful next step would be a short discovery call to understand your current website and lead flow. Would you like to leave your contact details?</p></div><form id="replyForm"><input id="reply" placeholder="Type a demo reply…" aria-label="Type a demo reply"><button class="btn btn-primary">Send</button></form><small class="micro">Replies stay in this demo and are not sent to a real customer.</small></section>
+</div>
+</section>
+
+<section class="view" id="view-workflows">
+<div class="pagehead"><div><small class="eyebrow">CONNECTED OPERATIONS</small><h1>Make work flow.</h1><p>Build a sequence. Demo mode never triggers external actions.</p></div><button class="btn btn-primary" id="addStep">＋ Add a step</button></div>
+<div class="workflowlayout"><section class="panel builder"><div class="panelhead"><div><h2>Lead follow-up sequence</h2><p>New lead → prepare response → schedule next step</p></div><label class="toggle"><input type="checkbox" id="enabled" checked><i></i> Enabled</label></div><div class="steps" id="steps"></div><div class="builderfoot"><button class="btn btn-outline" id="resetWorkflow">Reset demo</button><button class="btn btn-primary" id="runWorkflow">▶ Test workflow</button></div><p class="runresult" id="runResult" aria-live="polite"></p></section><aside class="panel info"><span class="kico purple">⌘</span><h3>How this workflow behaves</h3><p>This is a browser-based prototype. Testing it shows a simulated execution log only.</p><div><b>1 &nbsp; Trigger</b><small>Something starts the workflow.</small></div><div><b>2 &nbsp; Action</b><small>A task is prepared according to rules.</small></div><div><b>3 &nbsp; Review</b><small>Real integrations can be connected later.</small></div></aside></div>
+</section>
+
+<section class="view" id="view-email">
+<div class="pagehead"><div><small class="eyebrow">CUSTOMER COMMUNICATION</small><h1>Email, thoughtfully.</h1><p>Draft helpful follow-ups and preview what a customer would receive.</p></div><span class="soft">Sending not connected</span></div>
+<div class="email-layout"><section class="panel templates"><div class="panelhead"><div><h2>Templates</h2><p>Choose a sample email</p></div></div><button data-template="welcome" class="template selected">✉ <span><b>Welcome & confirm</b><small>New enquiry received</small></span> ↗</button><button data-template="followup" class="template">◷ <span><b>Helpful follow-up</b><small>Continue the conversation</small></span> ↗</button><button data-template="appointment" class="template">▦ <span><b>Appointment reminder</b><small>Upcoming meeting</small></span> ↗</button></section>
+<section class="panel editor"><div class="panelhead"><div><h2>Template editor</h2><p>Edits stay in this browser demo</p></div><span class="soft">Draft</span></div><label for="subject">Subject line</label><input id="subject" value="Thanks for reaching out to us"><label for="emailbody">Email message</label><textarea id="emailbody" rows="9">Hi {{first_name}},
+
+Thanks for reaching out. We've received your enquiry and appreciate you taking the time to tell us what you're working on.
+
+A member of our team will review your message and follow up with the next steps.
+
+Best,
+The Atlas Growth Team</textarea><div class="editactions"><button class="btn btn-outline" id="previewEmail">Preview email</button><button class="btn btn-primary" id="saveDraft">Save draft</button></div><p class="feedback" id="emailFeedback"></p></section>
+</div>
+</section>
+
+<section class="view" id="view-appointments">
+<div class="pagehead"><div><small class="eyebrow">TIME WELL SPENT</small><h1>Make time for the next step.</h1><p>Review and manage sample appointments.</p></div><button class="btn btn-primary" id="addAppointment">＋ Add appointment</button></div><div class="cards3" id="appointments"></div>
+</section>
+
+<section class="view" id="view-analytics">
+<div class="pagehead"><div><small class="eyebrow">SIGNALS, NOT NOISE</small><h1>Understand the activity.</h1><p>Metrics calculated from saved lead records. Traffic and revenue are not tracked.</p></div><select class="select" id="analyticsRange"><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select></div>
+<div class="kpis">
+<article><div>Enquiries <span class="kico purple">◎</span></div><strong id="analyticsTotal">0</strong><small>Saved leads</small></article>
+<article><div>Qualified <span class="kico mint">✓</span></div><strong id="analyticsQualified">0%</strong><small>Qualified leads / total leads</small></article>
+<article><div>Follow-ups due <span class="kico orange">◷</span></div><strong id="analyticsFollowUpsDue">0</strong><small id="analyticsFollowUpsNote">Due today or overdue; excludes converted leads</small></article>
+<article><div>Client workspaces <span class="kico blue">▣</span></div><strong>Demo only</strong><small>Client data not connected</small></article>
+</div>
+<section class="panel funnel"><div class="panelhead"><div><h2>Lead activity trend</h2><p>Actual saved leads and qualified leads by date</p></div></div><div class="chartmeta"><div><strong id="analyticsChartTotal">0</strong><small>saved leads in selected period</small></div><span>● Leads &nbsp; <i>●</i> Qualified</span></div><div class="bar-chart" id="analyticsBarChart"></div><div class="axis" id="analyticsChartAxis"><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span></div></section>
+<section class="panel funnel"><div class="panelhead"><div><h2>Lead status breakdown</h2><p>Actual saved leads grouped by current status</p></div></div><div id="statusBreakdown"><p>No saved leads yet.</p></div></section>
+</section>
+
+<section class="view" id="view-clients">
+<div class="pagehead"><div><small class="eyebrow">CLIENT WORKSPACES</small><h1>Every client, in context.</h1><p>Sample client list for the agency-management concept.</p></div><button class="btn btn-primary" id="addClient">＋ Add client</button></div><div class="cards3" id="clients"></div>
+</section>
+
+<section class="view" id="view-voice">
+<div class="pagehead"><div><small class="eyebrow">VOICE AUTOMATION</small><h1>Make conversations easier.</h1><p>Configure a voice-agent concept before connecting a provider.</p></div><span class="soft">Not connected</span></div>
+<div class="voice-layout"><section class="panel voicepreview"><div class="voiceorb">✦</div><small class="minttext">● DEMO CONFIGURATION</small><h2 id="voiceHeading">Atlas assistant</h2><p>Sample inbound call flow</p><div class="script"><small>GREETING</small><p id="scriptPreview">“Thanks for calling Atlas Growth. How can I help you today?”</p><small>AVAILABLE ACTIONS</small><p>Answer approved FAQs · Capture an enquiry · Request an appointment</p></div><button class="btn btn-outline" id="previewScript">Preview call script</button><p class="feedback" id="voiceFeedback"></p></section>
+<section class="panel editor"><div class="panelhead"><div><h2>Agent settings</h2><p>Sample configuration</p></div></div><label for="voiceName">Agent name</label><input id="voiceName" value="Atlas assistant"><label for="greeting">Opening greeting</label><textarea id="greeting" rows="3">Thanks for calling Atlas Growth. How can I help you today?</textarea><label for="hours">Business hours</label><select id="hours"><option>Monday–Friday, 9 AM–5 PM</option><option>Monday–Saturday, 10 AM–6 PM</option><option>24/7 demo availability</option></select><div class="warn">ⓘ Real calls require a telephony provider, connected voice model, and consent handling. This page does not place calls.</div><button class="btn btn-primary" id="saveVoice">Save demo settings</button></section>
+</div>
+</section>
+
+<section class="view" id="view-settings">
+<div class="pagehead"><div><small class="eyebrow">YOUR WORKSPACE</small><h1>Set the foundations.</h1><p>Manage sample workspace preferences.</p></div></div>
+<section class="panel settings">
+<div><span><b>Agency name</b><small>Displayed across this demo workspace.</small></span><input id="agencyName" value="Atlas Growth"></div>
+<div><span><b>Email notifications</b><small>Demo notification preferences only.</small></span><label class="toggle"><input type="checkbox" id="notificationsToggle" checked><i></i> Enabled</label></div>
+<div><span><b>Demo data</b><small>This action does not delete your saved leads.</small></span><button class="btn btn-outline" id="resetData">Reset demo data</button></div>
+<div><span><b>Integrations</b><small>Real providers are not connected in this version.</small></span><span class="soft">Not connected</span></div>
+<button class="btn btn-primary" id="saveSettings">Save preferences</button><p class="feedback" id="settingsFeedback"></p>
+</section>
+</section>
+
+</div>
+</main>
+
+<div class="toastregion" id="toasts" aria-live="polite"></div>
+
+<dialog id="leadModal">
+<form id="leadForm">
+<div class="modalhead"><div><small>LEAD DETAILS</small><h2 id="modalTitle">Add a lead</h2></div><button type="button" id="closeModal">×</button></div>
+<input type="hidden" id="leadId">
+<label for="name">Full name</label><input id="name" required placeholder="Jordan Miller">
+<label for="email">Email address</label><input id="email" type="email" required placeholder="jordan@example.com">
+<label for="company">Company</label><input id="company" required placeholder="Company name">
+<label for="service">Requested service</label><input id="service" placeholder="AI chatbot, automation, search…">
+<label for="requirement">Requirement / context</label><textarea id="requirement" rows="3" placeholder="What does the business need?"></textarea>
+<label for="followUpDate">Follow-up date</label><input id="followUpDate" type="date" aria-describedby="followUpHelp"><small id="followUpHelp">Optional. Converted leads are excluded from due counts.</small>
+<div class="twocol"><div><label for="source">Source</label><select id="source"><option>Website</option><option>Referral</option><option>Social</option><option>Other</option></select></div><div><label for="status">Status</label><select id="status"><option>New</option><option>Qualified</option><option>Follow-up</option><option>Converted</option></select></div></div>
+<div class="modalactions"><button type="button" class="btn btn-outline" id="cancelModal">Cancel</button><button type="submit" class="btn btn-primary">Save lead</button></div>
+</form>
+</dialog>
+
+<dialog id="genericModal">
+<div class="modalhead"><div><small>DEMO DETAILS</small><h2 id="genericTitle">Details</h2></div><button type="button" id="closeGeneric">×</button></div>
+<div id="genericBody"></div><div class="modalactions"><button class="btn btn-primary" id="doneGeneric">Done</button></div>
+</dialog>
+</div>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>
