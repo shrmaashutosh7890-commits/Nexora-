@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const $ = (s, root=document) => root.querySelector(s);
   const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-  const API = 'http://127.0.0.1:5000/api';
+  const API = '/api';
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   $('#year').textContent = new Date().getFullYear();
   const progress = $('#progress');
