@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  const API = 'http://127.0.0.1:5000/api';
+  const API = '/api';
   let csrfToken = '';
   let isAuthenticated = false;
   let leads = [];
